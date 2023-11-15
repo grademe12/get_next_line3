@@ -6,7 +6,7 @@
 /*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 12:48:57 by woosupar          #+#    #+#             */
-/*   Updated: 2023/11/06 12:52:51 by woosupar         ###   ########.fr       */
+/*   Updated: 2023/11/15 21:46:08 by woosupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,28 +24,34 @@ void	*make_node_add_back(t_gnl *list, int fd)
 	while (list->next != 0)
 		list = list->next;
 	new_node->line = 0;
+	read(fd, new_node->line, BUFFER_SIZE);
+	get_one_line(new_node, fd?);
 	new_node->fd = fd;
 	new_node->next = 0;
 	list->next = new_node;
 }
 
-void	ft_del(void *ptr)
+void	delete_node(t_list *gnl, void *del(void))
 {
 }
 
-void	ft_lstclear(t_list *gnl, void *del(void))
+void	*ft_memcpy(void *dst, void *src, size_t n)
 {
+	char	*cd;
+	char	*cs;
+	size_t	num;
+
+	if (dst == 0 && src == 0)
+		return ;
+	cd = (char *)dst;
+	cs = (char *)src;
+	num = 0;
+	while (num < n)
+	{
+		*cd = *cs;
+		cd++;
+		cs++;
+		num++;
+	}
+	return (dst);
 }
-
-char	*ft_join(char *s1, char *s2)
-{
-}
-
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
-{
-	size_t	i;
-	size_t	l;
-
-	i = 0;
-	while (*src != '\0')
-

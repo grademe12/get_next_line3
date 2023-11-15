@@ -6,7 +6,7 @@
 /*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 15:43:22 by woosupar          #+#    #+#             */
-/*   Updated: 2023/11/06 14:09:07 by woosupar         ###   ########.fr       */
+/*   Updated: 2023/11/15 21:49:05 by woosupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ typedef				s_gnl
 {
 	char			*line;
 	int				fd;
+	size_t			line_len;
 	struct s_gnl	*next;
 }					t_gnl
 

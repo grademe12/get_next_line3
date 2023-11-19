@@ -12,29 +12,19 @@
 
 #include "GET_NEXT_LINE_H"
 
-char	*get_one_line(t_gnl *list, int fd)
+char	*get_one_line(t_gnl *list, int fd, char *one_line)
 {
-	char	*buffer;
-	size_t	i;
+	size_t	val;
 
-	i = 0;
-	buffer = list->line;
-	buffer = (char *) malloc(BUFFER_SIZE);
-	if (buffer == 0)
-		return (0);
-	while (*buffer != '\n' || i < BUFFER_SIZE)
+	while (1)
 	{
-		buffer++;
-		i++;
+		val = read(fd, list->line, BUFFER_SIZE);
+		if ((list->line) == 0 || val == -1)
+			return (-1);
 	}
-	list->line_len = i;
-	if (*buffer == '\n')
-		return (buffer - i);
-	else
-
 }
 
-t_gnl	*fd_check(int fd, t_gnl *list)
+t_gnl	*fd_check(t_gnl *list, int fd)
 {
 	return (0);
 
@@ -45,18 +35,17 @@ char *get_next_line(int fd)
 {
 	static t_gnl	*line_list;
 	t_gnl			*temp;
+	char			*one_line;
 
-	line_list = 0;
-	if (fd_check(fd, line_list) != 0)
+	if (fd_check != 0)
 	{
-		temp = fd_check(fd, line_list);
-		if (temp->line == 0)
-		{
-			read(fd, temp->line, BUFFER_SIZE);
-			return (temp->line);
-		}
-		else
-			some_function_line()
+		temp = fd_check(line_list, fd);
+		return (get_one_line(temp, fd, one_line));
 	}
-	if (rea
+	else
+	{
+		make_node_add_back(line_list, fd);
+		temp = make_node_add_back(line, list, fd);
+		return (get_one_line(temp, fd, one_line));
+	}
 }

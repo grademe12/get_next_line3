@@ -12,46 +12,49 @@
 
 #include "GET_NEXT_LINE_H"
 
-void	*make_node_add_back(t_gnl *list, int fd)
+t_gnl	*make_node_add_back(t_gnl *list, int fd)
 {
 	t_gnl	*new_node;
 
+	if (list == 0)
+		return (0);
 	new_node = (t_gnl *) malloc(sizeof(t_gnl));
 	if (new_node == 0)
-		return (0);
-	if (list == 0)
 		return (0);
 	while (list->next != 0)
 		list = list->next;
 	new_node->line = 0;
-	read(fd, new_node->line, BUFFER_SIZE);
-	get_one_line(new_node, fd?);
+	new_node->line_len = 0;
 	new_node->fd = fd;
 	new_node->next = 0;
 	list->next = new_node;
+	return (new_node);
 }
 
 void	delete_node(t_list *gnl, void *del(void))
 {
 }
 
-void	*ft_memcpy(void *dst, void *src, size_t n)
+void	error()
 {
-	char	*cd;
-	char	*cs;
-	size_t	num;
+}
 
-	if (dst == 0 && src == 0)
-		return ;
-	cd = (char *)dst;
-	cs = (char *)src;
-	num = 0;
-	while (num < n)
-	{
-		*cd = *cs;
-		cd++;
-		cs++;
-		num++;
-	}
+void	*ft_memmove(void *dst, const void *src, size_t len)
+{
+	unsigned char		*cd;
+	const unsigned char	*cs;
+
+	cd = (unsigned char *)dst;
+	cs = (const unsigned char *)src;
+
+	if (cd == NULL && cs == NULL)
+		return (0);
+
+	if (src < dst && src + len >= dst)
+		while (len-- > 0)
+			*(cd + len) = *(cs + len);
+	else
+		while (len-- > 0)
+			*cd++ = *cs++;
 	return (dst);
 }

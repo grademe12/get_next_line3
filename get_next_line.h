@@ -20,9 +20,10 @@
 
 typedef				s_gnl
 {
-	char			*line;
-	int				fd;
+	char			*line[BUFFER_SIZE];
+	char			*line_first;
 	size_t			line_len;
+	int				fd;
 	struct s_gnl	*next;
 }					t_gnl
 

@@ -6,7 +6,7 @@
 /*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 12:48:57 by woosupar          #+#    #+#             */
-/*   Updated: 2023/11/15 21:46:08 by woosupar         ###   ########.fr       */
+/*   Updated: 2023/11/20 00:59:38 by woosupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,17 @@ t_gnl	*make_node_add_back(t_gnl *list, int fd)
 {
 	t_gnl	*new_node;
 
-	if (list == 0)
-		return (0);
 	new_node = (t_gnl *) malloc(sizeof(t_gnl));
 	if (new_node == 0)
 		return (0);
-	while (list->next != 0)
-		list = list->next;
-	new_node->line = 0;
+	new_node->line_first = new_node->line;
 	new_node->line_len = 0;
 	new_node->fd = fd;
 	new_node->next = 0;
+	if (list == 0)
+		return (new_node);
+	while (list->next != 0)
+		list = list->next;
 	list->next = new_node;
 	return (new_node);
 }

@@ -20,7 +20,7 @@
 
 typedef				s_gnl
 {
-	char			*line;
+	char			*line[BUFFER_SIZE];
 	char			*line_first;
 	size_t			line_len;
 	int				fd;

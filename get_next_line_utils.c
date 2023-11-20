@@ -19,7 +19,8 @@ t_gnl	*make_node_add_back(t_gnl *list, int fd)
 	new_node = (t_gnl *) malloc(sizeof(t_gnl));
 	if (new_node == 0)
 		return (0);
-	new_node->line_first = new_node->line;
+	new_node->line = 0;
+	new_node->line_first = 0;
 	new_node->line_len = 0;
 	new_node->fd = fd;
 	new_node->next = 0;
@@ -31,13 +32,15 @@ t_gnl	*make_node_add_back(t_gnl *list, int fd)
 	return (new_node);
 }
 
-void	delete_node(t_list *gnl, void *del(void))
+void	delete_node(t_list **gnl, int fd)
 {
 }
 
 void	error()
 {
 }
+
+
 
 void	*ft_memmove(void *dst, const void *src, size_t len)
 {

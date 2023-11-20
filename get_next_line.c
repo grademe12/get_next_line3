@@ -16,19 +16,25 @@ char	*get_one_line(t_gnl *list, int fd, char *one_line)
 {
 	size_t	val;
 	size_t	i;
+	size_t	buffer;
 
 	i = 0;
+	buffer = BUFFER_SIZE;
 	while (1)
 	{
-		val = read(fd, list->line, BUFFER_SIZE);
+		list->line = (char *) malloc(buffer);
+		if (list->line == 0)
+			return (0);
+		list->line_first = list->line;
+		list->line_len = i;
+		val = read(fd, list->line, buffer);
 		if (val == -1)
 			return (-1);
-		while (*(list->line) != '\n' || i < BUFFER_SIZE)
+		while (*(list->line) != '\n' || i < buffer)
 		{
 			*(list->line)++;
 			i++;
 		}
-		list->line_len = list->line_len + i;
 		if (*(list->line) == '\n')
 		{
 			one_line = (char *) malloc(i + 1);
@@ -37,11 +43,16 @@ char	*get_one_line(t_gnl *list, int fd, char *one_line)
 			ft_memmove(one_line, list->line_first, i);
 			one_line[i] = '\0';
 			(list->line)++;
-			ft_memmove(list->line_first, list->line, BUFFER_SIZE - i);
+			ft_memmove(list->line_first, list->line, buffer - i);
 			return (one_line);
 		}
 		else
-			BUFFER_SIZE = (BUFFER_SIZE * 2);
+		{
+			one_line = (char *) malloc(i);
+			ft_memmove(one_line + list->lien_len, list->line_first, buffer);
+			free(list->line);
+			buffer = (buffer * 2);
+		}
 	}
 }
 

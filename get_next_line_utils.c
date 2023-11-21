@@ -6,7 +6,7 @@
 /*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 12:48:57 by woosupar          #+#    #+#             */
-/*   Updated: 2023/11/20 00:59:38 by woosupar         ###   ########.fr       */
+/*   Updated: 2023/11/21 17:02:50 by woosupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_gnl	*make_node_add_back(t_gnl *list, int fd)
 	if (new_node == 0)
 		return (0);
 	new_node->line = 0;
-	new_node->line_first = 0;
+	new_node->line_first = new_node->line;
 	new_node->line_len = 0;
 	new_node->fd = fd;
 	new_node->next = 0;
@@ -36,12 +36,6 @@ void	delete_node(t_list **gnl, int fd)
 {
 }
 
-void	error()
-{
-}
-
-
-
 void	*ft_memmove(void *dst, const void *src, size_t len)
 {
 	unsigned char		*cd;
@@ -54,10 +48,16 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 		return (0);
 
 	if (src < dst && src + len >= dst)
+	{
+		*(cd + len + 1) = '\0';
 		while (len-- > 0)
 			*(cd + len) = *(cs + len);
+	}
 	else
+	{
 		while (len-- > 0)
 			*cd++ = *cs++;
+		*cd = '\0';
+	}
 	return (dst);
 }

@@ -6,7 +6,7 @@
 /*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 15:43:22 by woosupar          #+#    #+#             */
-/*   Updated: 2023/11/20 00:59:37 by woosupar         ###   ########.fr       */
+/*   Updated: 2023/11/21 17:02:53 by woosupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 typedef				s_gnl
 {
-	char			*line[BUFFER_SIZE];
+	char			line;
 	char			*line_first;
 	size_t			line_len;
 	int				fd;

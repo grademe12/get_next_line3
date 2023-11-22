@@ -36,6 +36,14 @@ void	delete_node(t_list **gnl, int fd)
 {
 }
 
+char	*ft_strjoin(char *s1, char *s2)
+{
+	int		s1_len;
+	int		s2_len;
+
+	while (*s1 != '\0')
+
+
 void	*ft_memmove(void *dst, const void *src, size_t len)
 {
 	unsigned char		*cd;

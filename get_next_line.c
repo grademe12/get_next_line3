@@ -12,10 +12,6 @@
 
 #include "GET_NEXT_LINE_H"
 
-char *join(char *s1, char *s2)
-{
-}
-
 char	*get_one_line(t_gnl *list, int fd, char *one_line)
 {
 	size_t	val;

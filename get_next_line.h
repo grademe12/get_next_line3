@@ -20,9 +20,8 @@
 
 typedef				s_gnl
 {
-	char			line;
-	char			*line_first;
 	size_t			line_len;
+	size_t			buffer;
 	int				fd;
 	struct s_gnl	*next;
 }					t_gnl;

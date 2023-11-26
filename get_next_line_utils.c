@@ -19,7 +19,6 @@ t_gnl	*make_node_add_back(t_gnl *list, int fd)
 	new_node = (t_gnl *) malloc(sizeof(t_gnl));
 	if (new_node == 0)
 		return (0);
-	new_node->line = 0;
 	new_node->line_len = 0;
 	new_node->fd = fd;
 	new_node->next = 0;
@@ -41,7 +40,7 @@ size_t	ft_strchr(char *buf, size_t buffer)
 	size_t	i;
 
 	i = 0;
-	while (i < buffer)
+	while (*buffer != '\0')
 	{
 		if (*buf == '\n')
 			return (i);
@@ -55,22 +54,16 @@ char	*ft_strjoin(char *buf, char *temp, t_gnl *list, size_t i)
 {
 	char	*join;
 
+	join = (char *) malloc(list->line_len + list->buffer + i + 1);
+	if (join == 0)
+		return (0);
+	while (*temp != '\0')
+		*join++ = *temp++;
+	while (*buf != '\0')
+		*join++ = *buf++;
+	*join = '\0';
 	if (i > 0)
-	{
-		개행 넣어서 리턴하기
-	}
-	else if (i == 0)
-	{
-		while (*temp != '\0')
-			i++;
-		join = (char *) malloc(list->line_len + list->buffer + i);
-		if (join == 0)
-			return (0);
-		while (*temp != '\0')
-			*join++ = *temp++;
-		while (
-
-
+	return (join);
 }
 void	*ft_memmove(void *dst, const void *src, size_t len)
 {

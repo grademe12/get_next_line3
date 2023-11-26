@@ -16,19 +16,22 @@ int		read_value(char	*buf, int fd, size_t buffer)
 {
 	size_t	val;
 
-	buf = (char *) malloc (buffer);
+	buf = (char *) malloc (buffer + 1);
 	if (buf == 0)
 		return (0);
-	val = read(fd, buf, buffer;
+	val = read(fd, buf, buffer);
 	if (val > 0)
+	{
+		buf[val] = '\0';
 		return (val);
+	}
 	else if (val == 0)
 		return (0);
 	else if (val == -1)
 		return (-1);
 }
 
-char	*get_one_line(t_gnl *list, int fd, size_t i)
+char	*get_one_line(t_gnl *list, int fd, size_t i, char *ret)
 {
 	char	*buf;
 	char	*temp;
@@ -40,8 +43,9 @@ char	*get_one_line(t_gnl *list, int fd, size_t i)
 		i = ft_strchr(buf, list->buffer)
 		if (i > 0)
 		{
-			list->line = ft_strjoin(buf, temp, list, i);
+			ret = ft_strjoin(buf, temp, list, i);
 			temp = ft_memmove(temp, buf, (list->buffer) - i + 1);
+			free(buf);
 			list->line_len = (list->buffer) - i + 1;
 		}
 		if (i == 0)
@@ -67,17 +71,19 @@ char *get_next_line(int fd)
 	static t_gnl	**line_list;
 	t_gnl			*temp;
 	size_t			i;
+	char			*ret;
 
 	i = 0;
+	ret = 0;
 	if (fd_check != 0)
 	{
 		temp = fd_check(*line_list, fd);
-		return (get_one_line(temp, fd, i));
+		return (get_one_line(temp, fd, i, ret));
 	}
 	else
 	{
 		make_node_add_back(*line_list, fd);
 		temp = make_node_add_back(*line_list, fd);
-		return (get_one_line(temp, fd, i);
+		return (get_one_line(temp, fd, i, ret);
 	}
 }

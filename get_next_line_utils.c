@@ -6,7 +6,7 @@
 /*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 12:48:57 by woosupar          #+#    #+#             */
-/*   Updated: 2023/11/21 17:02:50 by woosupar         ###   ########.fr       */
+/*   Updated: 2023/11/26 21:18:55 by woosupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@ t_gnl	*make_node_add_back(t_gnl *list, int fd)
 
 	new_node = (t_gnl *) malloc(sizeof(t_gnl));
 	if (new_node == 0)
-		return (0);
-	new_node->line_len = 0;
+		return ;
+	new_node->remain = 0;
+	new_node->remain_len = 0;
 	new_node->fd = fd;
-	new_node->next = 0;
+	new_node->n ext = 0;
 	new_node->buffer = BUFFER_SIZE;
 	if (list == 0)
 		return (new_node);
@@ -35,58 +36,59 @@ void	delete_node(t_list **gnl, int fd)
 {
 }
 
-size_t	ft_strchr(char *buf, size_t buffer)
+int	ft_strchr(char *buf, char *temp, int buffer)
 {
-	size_t	i;
+	int	i;
 
-	i = 0;
-	while (*buffer != '\0')
+	while (*buf != '\0')
 	{
 		if (*buf == '\n')
 			return (i);
-		str++;
+		buf++;
 		i++;
 	}
-	return (0)
-}
+	return (0);
+}	
 
-char	*ft_strjoin(char *buf, char *temp, t_gnl *list, size_t i)
+char	*ft_strjoin(char *buf, char *temp, t_gnl *list, int i)
 {
 	char	*join;
+	int		temp_len;
 
-	join = (char *) malloc(list->line_len + list->buffer + i + 1);
+	temp_len = 0;
+	while (*temp++)
+		temp_len++;
+	if (i > 0)
+		join = (char *) malloc(list->remain_len + temp_len + i + 2);
+	else
+		join = (char *) malloc(list->remain_len + temp_len + i + 1);
 	if (join == 0)
 		return (0);
-	while (*temp != '\0')
+	while (*(list->remain)++)
+		*join++ = *(list->remain)++;
+	while (*temp++)
 		*join++ = *temp++;
-	while (*buf != '\0')
+	while (*buf++)
 		*join++ = *buf++;
 	*join = '\0';
-	if (i > 0)
+	free(list->remain);
+	free(buf);
 	return (join);
 }
-void	*ft_memmove(void *dst, const void *src, size_t len)
+char	*move_remain(char *buf, int len)
 {
-	unsigned char		*cd;
-	const unsigned char	*cs;
+	char	*move;
+	int		count;
 
-	cd = (unsigned char *)dst;
-	cs = (const unsigned char *)src;
-
-	if (cd == NULL && cs == NULL)
-		return (0);
-
-	if (src < dst && src + len >= dst)
+	count = 0;
+	move = (char *) malloc(len);
+	if (move == 0)
+		return (-1);
+	while (count < len)
 	{
-		*(cd + len + 1) = '\0';
-		while (len-- > 0)
-			*(cd + len) = *(cs + len);
+		*move++ = *buf++ ;
+		count++;
 	}
-	else
-	{
-		while (len-- > 0)
-			*cd++ = *cs++;
-		*cd = '\0';
-	}
-	return (dst);
+	free(buf);
+	return (move);
 }

@@ -12,7 +12,7 @@
 
 #include "GET_NEXT_LINE_H"
 
-int		read_value(char	*buf, int fd, int buffer)
+int	read_value(char	*buf, int fd, int buffer)
 {
 	int	val;
 
@@ -43,45 +43,53 @@ char	*get_one_line(t_gnl *list, int fd, int i, char *ret)
 	temp = "";
 	while (read_value(buf, fd, list->buffer) > 0)
 	{
-		i = ft_strchr(buf, list->buffer);
+		i = ft_strchr(buf);
 		if (i > 0)
 		{
-			ret = ft_strjoin(buf, temp, list, i);
-			list->remain = move_remain(buf, (list->buffer) - i);
-			free(temp);
+			ret = ft_strjoin(buf, temp, list, i + 1);
+			list->remain = move_remain(buf, (list->buffer) - i, list);
+			return ;
 		}
 		else if (i == 0)
+		{
 			temp = ft_strjoin(buf, temp, list, i);
+			free(buf);
+		}
 	}
 	if (read_value(list, fd, buffer) == 0)
+	{
 		ret = ft_strjoin(buf, temp, list, i);
-	else
 		return (0);
+	}
 }
 
 t_gnl	*fd_check(t_gnl *list, int fd)
 {
+	t_gnl	*temp_node;
 	return (0);
-
 	return ();
 }
 
-char *get_next_line(int fd)
+char	*get_next_line(int fd)
 {
 	static t_gnl	**line_list;
 	t_gnl			*target_node;
 	int				i;
+	int				del_target;
 	char			*ret;
 
 	i = 0;
 	ret = 0;
+	del_target = 1;
 	target_node = fd_check(line_list, fd);
 	if (target_node)
-		ret = get_one_line(target_node, fd, i, ret);
+		del_target = get_one_line(target_node, fd, i, ret);
 	else
 	{
-		target_node = make_node_add_back(line_list,fd);
-		ret = get_one_line(target_node, fd, i, ret);
+		target_node = make_node_add_back(line_list, fd);
+		del_target = get_one_line(target_node, fd, i, ret);
 	}
+	if (del_target == 0)
+		delete_target_node(line_list, target_node, fd);
 	return (ret);
 }

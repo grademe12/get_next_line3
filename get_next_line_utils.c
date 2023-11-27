@@ -22,7 +22,7 @@ t_gnl	*make_node_add_back(t_gnl *list, int fd)
 	new_node->remain = 0;
 	new_node->remain_len = 0;
 	new_node->fd = fd;
-	new_node->n ext = 0;
+	new_node->next = 0;
 	new_node->buffer = BUFFER_SIZE;
 	if (list == 0)
 		return (new_node);
@@ -36,7 +36,7 @@ void	delete_node(t_list **gnl, int fd)
 {
 }
 
-int	ft_strchr(char *buf, char *temp, int buffer)
+int	ft_strchr(char *buf)
 {
 	int	i;
 
@@ -48,7 +48,7 @@ int	ft_strchr(char *buf, char *temp, int buffer)
 		i++;
 	}
 	return (0);
-}	
+}
 
 char	*ft_strjoin(char *buf, char *temp, t_gnl *list, int i)
 {
@@ -58,24 +58,24 @@ char	*ft_strjoin(char *buf, char *temp, t_gnl *list, int i)
 	temp_len = 0;
 	while (*temp++)
 		temp_len++;
-	if (i > 0)
-		join = (char *) malloc(list->remain_len + temp_len + i + 2);
-	else
-		join = (char *) malloc(list->remain_len + temp_len + i + 1);
+	join = (char *) malloc(list->remain_len + temp_len + i + 1);
 	if (join == 0)
 		return (0);
-	while (*(list->remain)++)
+	while (*(list->remain))
 		*join++ = *(list->remain)++;
+	free(list->remain);
 	while (*temp++)
 		*join++ = *temp++;
 	while (*buf++)
 		*join++ = *buf++;
 	*join = '\0';
-	free(list->remain);
-	free(buf);
+	free(temp);
+	if (i == 0)
+		list->buffer = (list->buffer) * 2;
 	return (join);
 }
-char	*move_remain(char *buf, int len)
+
+char	*move_remain(char *buf, int len, t_gnl *list)
 {
 	char	*move;
 	int		count;
@@ -89,6 +89,7 @@ char	*move_remain(char *buf, int len)
 		*move++ = *buf++ ;
 		count++;
 	}
+	list->remain_len = len - 1;
 	free(buf);
 	return (move);
 }

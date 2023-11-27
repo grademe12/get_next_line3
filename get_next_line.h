@@ -13,13 +13,13 @@
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <stddef.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <stddef.h>
 
-#define BUFFER_SIZE 10
+# define BUFFER_SIZE 10
 
-typedef				s_gnl
+typedef s_gnl
 {
 	char			*remain;
 	size_t			remain_len;

@@ -6,7 +6,7 @@
 /*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 15:43:22 by woosupar          #+#    #+#             */
-/*   Updated: 2023/11/26 17:24:58 by woosupar         ###   ########.fr       */
+/*   Updated: 2023/12/01 15:32:14 by woosupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <unistd.h>
 # include <stdlib.h>
-# include <stddef.h>
 
 # define BUFFER_SIZE 10
 
@@ -27,5 +26,15 @@ typedef s_gnl
 	int				fd;
 	struct s_gnl	*next;
 }					t_gnl;
+
+int	read_value(char *buf, int fd, int buffer);
+char	*get_one_line(t_gnl *list, int fd, int i, char *ret);
+t_gnl	*fd_check(t_gnl **line_list, int fd);
+char	*get_next_line(int fd);
+t_gnl	*make_node_add_back(t_gnl *list, int fd);
+void	delete_target_node(t_gnl **line_list, t_gnl *target_node);
+int	ft_strchr(char *buf);
+char	*ft_strjoin(char *buf, char *temp, t_gnl *list, int i);
+char	*move_remain(char *buf, int len, t_gnl *list);
 
 #endif

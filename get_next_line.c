@@ -6,7 +6,7 @@
 /*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:43:45 by woosupar          #+#    #+#             */
-/*   Updated: 2023/11/26 21:19:29 by woosupar         ###   ########.fr       */
+/*   Updated: 2023/12/01 15:24:22 by woosupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*get_one_line(t_gnl *list, int fd, int i, char *ret)
 		{
 			ret = ft_strjoin(buf, temp, list, i + 1);
 			list->remain = move_remain(buf, (list->buffer) - i, list);
-			return ;
+			return (ret);
 		}
 		else if (i == 0)
 		{
@@ -63,11 +63,19 @@ char	*get_one_line(t_gnl *list, int fd, int i, char *ret)
 	}
 }
 
-t_gnl	*fd_check(t_gnl *list, int fd)
+t_gnl	*fd_check(t_gnl **line_list, int fd)
 {
-	t_gnl	*temp_node;
+	t_gnl	*cur;
+
+	cur = *line_list;
+	while (cur != 0)
+	{
+		if (cur->fd == fd)
+			return (cur);
+		else
+			cur = cur->next;
+	}
 	return (0);
-	return ();
 }
 
 char	*get_next_line(int fd)
@@ -81,6 +89,9 @@ char	*get_next_line(int fd)
 	i = 0;
 	ret = 0;
 	del_target = 1;
+	line_list = (t_gnl **) malloc(sizeof(t_gnl));
+	if (line_list == 0)
+		return (0);
 	target_node = fd_check(line_list, fd);
 	if (target_node)
 		del_target = get_one_line(target_node, fd, i, ret);
@@ -90,6 +101,6 @@ char	*get_next_line(int fd)
 		del_target = get_one_line(target_node, fd, i, ret);
 	}
 	if (del_target == 0)
-		delete_target_node(line_list, target_node, fd);
+		delete_target_node(line_list, target_node);
 	return (ret);
 }

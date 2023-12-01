@@ -6,13 +6,13 @@
 /*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 12:48:57 by woosupar          #+#    #+#             */
-/*   Updated: 2023/11/26 21:18:55 by woosupar         ###   ########.fr       */
+/*   Updated: 2023/12/01 15:32:52 by woosupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "GET_NEXT_LINE_H"
 
-t_gnl	*make_node_add_back(t_gnl *list, int fd)
+t_gnl	*make_node_add_back(t_gnl **line_list, int fd)
 {
 	t_gnl	*new_node;
 
@@ -24,17 +24,34 @@ t_gnl	*make_node_add_back(t_gnl *list, int fd)
 	new_node->fd = fd;
 	new_node->next = 0;
 	new_node->buffer = BUFFER_SIZE;
-	if (list == 0)
+	if (*line_list == 0)
 		return (new_node);
-	while (list->next != 0)
-		list = list->next;
-	list->next = new_node;
+	while (*line_list->next != 0)
+		*line_list = *line_list->next;
+	*line_list->next = new_node;
 	return (new_node);
 }
 
-void	delete_node(t_list **gnl, int fd)
+void	delete_target_node(t_gnl **line_list, t_gnl *target_node)
 {
-}
+	t_gnl	*prev_node;
+
+	if (*line_list == NULL || target_node == NULL)
+		return ;
+	prev_node = NULL;
+	if (*line_list == target_node)
+		*line_list = target_node->next;
+	else
+	{
+		prev_node = *line_list;
+		while (prev_node->next != target_node)
+			prev_node = prev_node->next;
+	}
+	if (prev_node == 0)
+		return ;
+	prev_node->next = target_node->next;
+	free(target_node);
+}		
 
 int	ft_strchr(char *buf)
 {

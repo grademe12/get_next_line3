@@ -6,16 +6,18 @@
 /*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 12:48:57 by woosupar          #+#    #+#             */
-/*   Updated: 2023/12/01 15:32:52 by woosupar         ###   ########.fr       */
+/*   Updated: 2023/12/01 15:58:49 by woosupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "GET_NEXT_LINE_H"
+#include "get_next_line.h"
 
 t_gnl	*make_node_add_back(t_gnl **line_list, int fd)
 {
 	t_gnl	*new_node;
+	t_gnl	*temp;
 
+	temp = *line_list;
 	new_node = (t_gnl *) malloc(sizeof(t_gnl));
 	if (new_node == 0)
 		return ;
@@ -26,9 +28,9 @@ t_gnl	*make_node_add_back(t_gnl **line_list, int fd)
 	new_node->buffer = BUFFER_SIZE;
 	if (*line_list == 0)
 		return (new_node);
-	while (*line_list->next != 0)
-		*line_list = *line_list->next;
-	*line_list->next = new_node;
+	while (temp->next != 0)
+		temp = temp->next;
+	temp->next = new_node;
 	return (new_node);
 }
 
@@ -89,6 +91,8 @@ char	*ft_strjoin(char *buf, char *temp, t_gnl *list, int i)
 	free(temp);
 	if (i == 0)
 		list->buffer = (list->buffer) * 2;
+	if (i > 0)
+		free(buf);
 	return (join);
 }
 

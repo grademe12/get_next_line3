@@ -6,11 +6,11 @@
 /*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:43:45 by woosupar          #+#    #+#             */
-/*   Updated: 2023/12/01 15:24:22 by woosupar         ###   ########.fr       */
+/*   Updated: 2023/12/01 16:11:52 by woosupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "GET_NEXT_LINE_H"
+#include "get_next_line.h"
 
 int	read_value(char	*buf, int fd, int buffer)
 {
@@ -53,10 +53,10 @@ char	*get_one_line(t_gnl *list, int fd, int i, char *ret)
 		else if (i == 0)
 		{
 			temp = ft_strjoin(buf, temp, list, i);
-			free(buf);
+			buf = 0;
 		}
 	}
-	if (read_value(list, fd, buffer) == 0)
+	if (read_value(list, fd, list->buffer) == 0)
 	{
 		ret = ft_strjoin(buf, temp, list, i);
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 12:48:57 by woosupar          #+#    #+#             */
-/*   Updated: 2023/12/01 15:58:49 by woosupar         ###   ########.fr       */
+/*   Updated: 2023/12/02 12:16:45 by woosupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,17 @@ t_gnl	*make_node_add_back(t_gnl **line_list, int fd)
 	temp = *line_list;
 	new_node = (t_gnl *) malloc(sizeof(t_gnl));
 	if (new_node == 0)
-		return ;
+		return (0);
 	new_node->remain = 0;
 	new_node->remain_len = 0;
 	new_node->fd = fd;
-	new_node->next = 0;
 	new_node->buffer = BUFFER_SIZE;
+	new_node->next = 0;
 	if (*line_list == 0)
+	{
+		*line_list = new_node;
 		return (new_node);
+	}
 	while (temp->next != 0)
 		temp = temp->next;
 	temp->next = new_node;
@@ -55,10 +58,11 @@ void	delete_target_node(t_gnl **line_list, t_gnl *target_node)
 	free(target_node);
 }		
 
-int	ft_strchr(char *buf)
+ssize_t	ft_strchr(char *buf)
 {
-	int	i;
+	ssize_t	i;
 
+	i = 0;
 	while (*buf != '\0')
 	{
 		if (*buf == '\n')
@@ -66,51 +70,62 @@ int	ft_strchr(char *buf)
 		buf++;
 		i++;
 	}
-	return (0);
+	return (i);
 }
 
-char	*ft_strjoin(char *buf, char *temp, t_gnl *list, int i)
+char	*ft_strjoin(char *buf, char *temp, t_gnl *list, ssize_t i)
 {
-	char	*join;
-	int		temp_len;
+	char		*join;
+	ssize_t		temp_len;
+	int			idx;
+	int			idx2;
+	int			idx3;
 
+	idx = -1;
+	idx2 = -1;
+	idx3 = 0;
 	temp_len = 0;
-	while (*temp++)
+	while (*temp && temp++)
 		temp_len++;
 	join = (char *) malloc(list->remain_len + temp_len + i + 1);
 	if (join == 0)
 		return (0);
-	while (*(list->remain))
-		*join++ = *(list->remain)++;
+	while (list->remain && *(list->remain + idx3))
+	{
+		*(join + idx3) = *(list->remain + idx3);
+		idx3++;
+	}
 	free(list->remain);
-	while (*temp++)
-		*join++ = *temp++;
-	while (*buf++)
-		*join++ = *buf++;
-	*join = '\0';
+	list->remain_len = 0;
+	while (*(temp + ++idx))
+		*(join + idx + idx3) = *(temp + idx);
+	while (*(buf + ++idx2))
+		*(join + idx + idx2 + idx3) = *(buf + idx2);
+	*(join + idx + idx2 + idx3) = '\0';
 	free(temp);
-	if (i == 0)
+	if (i == BUFFER_SIZE)
 		list->buffer = (list->buffer) * 2;
-	if (i > 0)
-		free(buf);
+	if (i > 0 && i != BUFFER_SIZE)
+		list->remain = move_remain(buf, (list->buffer) - i - 1, list);
+	free(buf);
 	return (join);
 }
 
-char	*move_remain(char *buf, int len, t_gnl *list)
+char	*move_remain(char *buf, ssize_t len, t_gnl *list)
 {
-	char	*move;
-	int		count;
+	char		*move;
+	ssize_t		count;
 
 	count = 0;
 	move = (char *) malloc(len);
 	if (move == 0)
-		return (-1);
+		return (0);
 	while (count < len)
 	{
 		*move++ = *buf++ ;
 		count++;
 	}
+	*move = '\0';
 	list->remain_len = len - 1;
-	free(buf);
 	return (move);
 }

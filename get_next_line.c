@@ -6,7 +6,7 @@
 /*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 12:36:09 by woosupar          #+#    #+#             */
-/*   Updated: 2023/12/02 18:11:13 by woosupar         ###   ########.fr       */
+/*   Updated: 2023/12/02 19:49:53 by woosupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ char	*get_one_line(int fd, t_gnl *gnl)
 	while (i > 0)
 	{
 		if (i != BUFFER_SIZE)
-			return (ft_strjoin(buf, gnl);
+			return (ft_strjoin(buf, gnl, i + 1);
 		else
-			ft_strjoin(buf, gnl);
+			ft_strjoin(buf, gnl, i);
 	}
 	if (ret_fun_read == 0)
 		return ;

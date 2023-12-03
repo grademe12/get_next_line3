@@ -26,4 +26,35 @@ char	*ft_strjoin(char *buf, t_gnl *gnl, ssize_t i)
 		return (0);
 	while ((gnl->rem)[i1++] != '\0')
 		join[i1] = (gnl->rem)[i1] ;
-	while (buf[i2] != '\0' || buf[i2] != '\n')
+
+	return (join);
+}
+
+char *make_rem(char *buf, t_gnl *gnl, ssize_t i, char *rem_free)
+{
+	char *temp;
+
+	if (gnl->len == 0)
+	{
+		gnl->rem = (char *) malloc(BUFFER_SIZE - i);
+		if (gnl->rem == 0)
+			return (-1);
+		while (*buf != '\0')
+			*(gnl->rem)++ = *buf++ + i + 1;
+		*(gnl->rem) = '\0';
+		return (0);
+	}
+	else
+	{
+		temp = (char *) malloc(gnl->len + BUFFER_SIZE + 1);
+		if (temp == 0)
+			return (0);
+		while (*(gnl->rem))
+			*temp++ = *(gnl->rem)++;
+		while (*buf)
+			*temp++ = *buf;
+		*temp = '\0';
+		free(rem_free);
+		return (temp);
+	}
+}

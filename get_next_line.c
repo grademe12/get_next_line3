@@ -43,6 +43,7 @@ ssize_t	fun_read(int fd, char **buf)
 char	*get_one_line(int fd, t_gnl *gnl)
 {
 	char		*buf;
+	char		*rem_free;
 	ssize_t		i;
 
 	buf = 0;
@@ -50,9 +51,16 @@ char	*get_one_line(int fd, t_gnl *gnl)
 	while (i > 0)
 	{
 		if (i != BUFFER_SIZE)
+		{
+			make_rem(buf, gnl, i);
+			gnl->len = BUFFER_SIZE - i - 1;
 			return (ft_strjoin(buf, gnl, i + 1);
+		}
 		else
-			ft_strjoin(buf, gnl, i);
+		{
+			rem_free = gnl->rem;
+			gnl->rem = make_rem(buf, gnl, i, rem_free);
+		}
 	}
 	if (ret_fun_read == 0)
 		return ;
@@ -66,6 +74,7 @@ char	*get_next_line(int fd)
 	i = 0;
 	if (fd < 0)
 		return (0);
+	(gnl_array[fd]->rem)[0] = '\0';
 	ret = get_one_line(fd, &gnl_array[fd]);
 
 	return (ret);

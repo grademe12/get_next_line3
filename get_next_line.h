@@ -25,6 +25,7 @@
 typedef struct		s_gnl
 {
 	char			*rem;
+	char			*temp;
 	ssize_t			len;
 }					t_gnl;
 

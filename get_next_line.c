@@ -52,15 +52,11 @@ char	*get_one_line(int fd, t_gnl *gnl)
 	{
 		if (i != BUFFER_SIZE)
 		{
-			make_rem(buf, gnl, i);
-			gnl->len = BUFFER_SIZE - i - 1;
+			make_rem(buf, gnl, i, rem_free);
 			return (ft_strjoin(buf, gnl, i + 1);
 		}
 		else
-		{
-			rem_free = gnl->rem;
-			gnl->rem = make_rem(buf, gnl, i, rem_free);
-		}
+			gnl->temp = make_temp(buf, gnl, i);
 	}
 	if (ret_fun_read == 0)
 		return ;
@@ -69,12 +65,15 @@ char	*get_one_line(int fd, t_gnl *gnl)
 char	*get_next_line(int fd)
 {
 	char				*ret;
-	static	t_gnl		gnl_array[49152];
+	static	t_gnl		gnl_array[OPEN_MAX];
 
 	i = 0;
-	if (fd < 0)
+	if (fd < 0 || fd == 1 || fd == 2)
 		return (0);
-	(gnl_array[fd]->rem)[0] = '\0';
+	gnl_array[fd]->temp = (char *) malloc(1);
+	if (gnl_array[fd] == 0)
+		return (0);
+	(gnl_array[fd]->temp)[0] = '\0';
 	ret = get_one_line(fd, &gnl_array[fd]);
 
 	return (ret);

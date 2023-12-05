@@ -6,7 +6,7 @@
 /*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 12:36:09 by woosupar          #+#    #+#             */
-/*   Updated: 2023/12/05 16:39:09 by woosupar         ###   ########.fr       */
+/*   Updated: 2023/12/05 18:38:54 by woosupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,29 +52,30 @@ char	*get_one_line(int fd, t_gnl *gnl)
 	{
 		if (i != BUFFER_SIZE)
 		{
-			gnl->rem = 
-			ft_strjoin(buf, gnl, i + 1);
+			one_line = ft_strjoin(buf, gnl, i + 1);
+			make_rem(buf, gnl, i);
+			free(buf);
+			return (one_line);
 		}
 		else
-			gnl->temp = make_temp(buf, gnl, i);
+			gnl->temp = make_temp(buf, gnl);
 	}
-	if (ret_fun_read == 0)
-		return ;
+	one_line = ft_strjoin(buf, gnl, i + 1);
+	free(buf);
+	return (one_line);
 }
 
 char	*get_next_line(int fd)
 {
 	char				*ret;
-	static	t_gnl		gnl_array[OPEN_MAX];
+	static	t_gnl		gnl_array[4092];
 
-	i = 0;
 	if (fd < 0 || fd == 1 || fd == 2)
 		return (0);
-	gnl_array[fd]->temp = (char *) malloc(1);
-	if (gnl_array[fd] == 0)
+	gnl_array[fd].temp = (char *) malloc(1);
+	if (gnl_array[fd].temp == 0)
 		return (0);
-	(gnl_array[fd]->temp)[0] = '\0';
+	(gnl_array[fd].temp)[0] = '\0';
 	ret = get_one_line(fd, &gnl_array[fd]);
-
 	return (ret);
 }

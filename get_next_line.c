@@ -47,7 +47,7 @@ char	*get_one_line(int fd, t_gnl *gnl)
 	ssize_t		i;
 
 	buf = 0;
-	while (1)
+	while (buf == 0)
 	{
 		i = fun_read(fd, &buf);
 		if (i != BUFFER_SIZE)

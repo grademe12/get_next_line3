@@ -41,8 +41,8 @@ char	*ft_strjoin(char *buf, t_gnl *gnl, ssize_t i)
 char	*make_temp(char *buf, t_gnl *gnl)
 {
 	ssize_t	temp_len;
-	ssize_t	i1;
-	ssize_t	i2;
+	int		i1;
+	int		i2;
 	char	*str;
 
 	temp_len = 0;
@@ -67,8 +67,11 @@ char	*make_temp(char *buf, t_gnl *gnl)
 void	make_rem(char *buf, t_gnl *gnl, ssize_t i)
 {
 	ssize_t	rem_i;
+	char	*temp;
 
 	rem_i = 0;
+	while (buf[i + rem_i] != '\0')
+		
 	gnl->rem = (char *) malloc(BUFFER_SIZE - i);
 	if (gnl->rem == 0)
 		return ;

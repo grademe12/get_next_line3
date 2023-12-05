@@ -6,7 +6,7 @@
 /*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 12:36:09 by woosupar          #+#    #+#             */
-/*   Updated: 2023/12/02 19:49:53 by woosupar         ###   ########.fr       */
+/*   Updated: 2023/12/05 16:39:09 by woosupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ ssize_t	fun_read(int fd, char **buf)
 char	*get_one_line(int fd, t_gnl *gnl)
 {
 	char		*buf;
-	char		*rem_free;
+	char		*one_line;
 	ssize_t		i;
 
 	buf = 0;
@@ -52,8 +52,8 @@ char	*get_one_line(int fd, t_gnl *gnl)
 	{
 		if (i != BUFFER_SIZE)
 		{
-			make_rem(buf, gnl, i, rem_free);
-			return (ft_strjoin(buf, gnl, i + 1);
+			gnl->rem = 
+			ft_strjoin(buf, gnl, i + 1);
 		}
 		else
 			gnl->temp = make_temp(buf, gnl, i);

@@ -19,17 +19,17 @@ char	*ft_strjoin(char *buf, t_gnl *gnl, ssize_t i)
 	int		i2;
 	int		i3;
 
-	i1 = 0;
-	i2 = 0;
-	i3 = 0;
-	join = (char *) malloc(gnl->len + i + 1);
+	i1 = -1;
+	i2 = -1;
+	i3 = -1;
+	join = (char *) malloc(gnl->len + i);
 	if (join == 0)
 		return (0);
-	while ((gnl->rem)[i1++] != '\0')
+	while ((gnl->rem)[++i1] != '\0')
 		join[i1] = (gnl->rem)[i1] ;
-	while ((gnl->temp)[i2++] != '\0')
+	while ((gnl->temp)[++i2] != '\0')
 		join[i1 + i2] = (gnl->temp)[i2] ;
-	while (buf[i3++] != '\0')
+	while (++i3 < i)
 		join[i1 + i2 + i3] = buf[i3] ;
 	join[i1 + i2 + i3] = '\n';
 	join[i1 + i2 + i3 + 1] = '\0';
@@ -41,22 +41,24 @@ char	*ft_strjoin(char *buf, t_gnl *gnl, ssize_t i)
 char	*make_temp(char *buf, t_gnl *gnl)
 {
 	ssize_t	temp_len;
+	ssize_t	i1;
+	ssize_t	i2;
 	char	*str;
-	char	*temp_add;
 
 	temp_len = 0;
-	temp_add = gnl->temp;
-	while (gnl->temp[temp_len] != '\0')
+	i1 = -1;
+	i2 = -1;
+	while ((gnl->temp)[temp_len] != '\0')
 		temp_len++;
 	str = (char *) malloc(temp_len + BUFFER_SIZE + 1);
 	if (str == 0)
 		return (0);
-	while (*(gnl->temp) != '\0')
-		*str++ = *(gnl->temp)++;
-	while (*buf != '\0')
-		*str++ = *buf++;
-	*str = '\0';
-	free(temp_add);
+	while ((gnl->temp)[++i1] != '\0')
+		str[i1] = (gnl->temp)[i1];
+	while (buf[++i2] != '\0')
+		str[i1 + i2] = buf[i2];
+	str[i1 + i2] = '\0';
+	//free(temp_add);
 	free(buf);
 	return (str);	
 }
@@ -74,5 +76,4 @@ void	make_rem(char *buf, t_gnl *gnl, ssize_t i)
 	gnl->len = BUFFER_SIZE - i;
 	while ((gnl->rem)[rem_i] != '\0')
 		(gnl->rem)[rem_i++] = buf[i++ + 1];
-	free(gnl->temp);
 }

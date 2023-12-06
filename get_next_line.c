@@ -6,7 +6,7 @@
 /*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 12:36:09 by woosupar          #+#    #+#             */
-/*   Updated: 2023/12/06 17:31:44 by woosupar         ###   ########.fr       */
+/*   Updated: 2023/12/06 19:38:55 by woosupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,19 +69,23 @@ char	*get_one_line(int fd, t_gnl *gnl)
 
 	temp_idx = -1;
 	buf = 0;
-	fun_read(fd, &buf);
-	gnl->temp = make_temp(buf, gnl);
-	while (gnl->temp[++temp_idx] != '\0')
-		if (gnl->temp[temp_idx] == '\n')
-			break;
-	if (temp_idx == gnl->len)
-		gnl->buffer = (gnl->buffer) * 2;
-	else
+	if (fun_read(fd, &buf) > 0)
 	{
-		one_line = make_one_line(gnl, temp_idx);
-		ft_memmove(gnl, temp_idx);
-
-	return (one_line);
+		gnl->temp = make_temp(buf, gnl);
+		while (gnl->temp[++temp_idx] != '\0')
+			if (gnl->temp[temp_idx] == '\n')
+				break;
+		gnl->temp_idx = temp_idx;
+		if (temp_idx == gnl->len)
+			gnl->buffer = (gnl->buffer) * 2;
+		else
+		{
+			one_line = make_one_line(gnl, temp_idx);
+			ft_memmove(gnl, temp_idx);
+			return (one_line);
+		}
+	}
+	return (0);
 }
 
 char	*get_next_line(int fd)
@@ -91,8 +95,10 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || fd == 1 || fd == 2)
 		return (0);
-	gnl_array[fd].buffer = BUFFER_SIZE;
-	ret = get_one_line(fd, &gnl_array[fd]);
+	if (gnl_array[fd].buffer < BUFFER_SIZE)
+		gnl_array[fd].buffer = BUFFER_SIZE;
+	while (gnl->temp_idx == gnl_len)
+		ret = get_one_line(fd, &gnl_array[fd]);
 	if (ret == 0)
 		return (0);
 	return (ret);

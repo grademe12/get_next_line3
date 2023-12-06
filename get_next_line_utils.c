@@ -6,7 +6,7 @@
 /*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 12:36:40 by woosupar          #+#    #+#             */
-/*   Updated: 2023/12/06 17:31:46 by woosupar         ###   ########.fr       */
+/*   Updated: 2023/12/06 19:38:57 by woosupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,10 @@ char	*make_temp(char *buf, t_gnl *gnl)
 
 	i1 = -1;
 	i2 = -1;
-	str = (char *) malloc(buffer + 1);
+	str = (char *) malloc(gnl->buffer + 1);
 	if (str == 0)
 		return (0);
-	while (i1++ < )
+	while ((gnl->temp) != 0 && (gnl->temp)[++i1] != '\0')
 		str[i1] = (gnl->temp)[i1];
 	while (buf[++i2] != '\0')
 		str[i1 + i2] = buf[i2];
@@ -81,11 +81,21 @@ void	ft_memmove(t_gnl *gnl, ssize_t temp_idx)
 {
 	char	*dst;
 	char	*src;
-	
+	ssize_t	a;
+
+	a = 0;
 	dst = gnl->temp;
-	src = gnl->temp;
-	while (temp_idx < gnl->len)
-		*dst = *src + temp_idx ;
+	src = gnl->temp + temp_idx;
+	while (temp_idx + a < gnl->len)
+	{
+		*dst = *src + a;
+		a++;
+	}
+	while (temp_idx + a < buffer + 1)
+	{
+		*(src + a) = '\0';
+		a++;
+	}
 }
 /*
 void	make_rem(char *buf, t_gnl *gnl, ssize_t i)

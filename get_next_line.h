@@ -6,7 +6,7 @@
 /*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 15:34:29 by woosupar          #+#    #+#             */
-/*   Updated: 2023/12/05 19:55:43 by woosupar         ###   ########.fr       */
+/*   Updated: 2023/12/06 16:28:47 by woosupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 
 typedef struct		s_gnl
 {
-	char			*rem;
 	char			*temp;
+	size_t			buffer;
 	ssize_t			len;
 }					t_gnl;
 

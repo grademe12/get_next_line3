@@ -6,7 +6,7 @@
 /*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 12:36:40 by woosupar          #+#    #+#             */
-/*   Updated: 2023/12/06 15:25:40 by woosupar         ###   ########.fr       */
+/*   Updated: 2023/12/06 17:31:46 by woosupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,24 +39,21 @@
 
 char	*make_temp(char *buf, t_gnl *gnl)
 {
-	ssize_t	temp_len;
-	int		i1;
-	int		i2;
+	ssize_t	i1;
+	ssize_t	i2;
 	char	*str;
 
-	temp_len = 0;
 	i1 = -1;
 	i2 = -1;
-	while ((gnl->temp)[temp_len] != '\0')
-		temp_len++;
-	str = (char *) malloc(temp_len + BUFFER_SIZE + 1);
+	str = (char *) malloc(buffer + 1);
 	if (str == 0)
 		return (0);
-	while ((gnl->temp)[++i1] != '\0')
+	while (i1++ < )
 		str[i1] = (gnl->temp)[i1];
 	while (buf[++i2] != '\0')
 		str[i1 + i2] = buf[i2];
 	str[i1 + i2] = '\0';
+	gnl->len = i1 + i2 ;
 	free(buf);
 	return (str);	
 }
@@ -80,7 +77,16 @@ char	*make_one_line(t_gnl *gnl, ssize_t temp_idx)
 	return (str);
 }
 
-
+void	ft_memmove(t_gnl *gnl, ssize_t temp_idx)
+{
+	char	*dst;
+	char	*src;
+	
+	dst = gnl->temp;
+	src = gnl->temp;
+	while (temp_idx < gnl->len)
+		*dst = *src + temp_idx ;
+}
 /*
 void	make_rem(char *buf, t_gnl *gnl, ssize_t i)
 {

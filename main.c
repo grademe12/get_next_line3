@@ -11,12 +11,18 @@ int main(void)
     fd = open("a.txt", O_RDONLY);
 	printf ("%d\n", fd);
 	s = get_next_line(fd);
-	printf ("%s\n", s);
-
-	while (s != 0)
-    {
-        s = get_next_line(fd);
-        printf("%s", s);
-    }
+	printf ("%s", s);
+	s = get_next_line(fd);
+	printf ("%s", s);
+	s = get_next_line(fd);
+	printf ("%s", s);
+	s = get_next_line(fd);
+	printf ("%s", s);
+	s = get_next_line(fd);
+	printf ("%s", s);
+	s = get_next_line(fd);
+	printf ("%s", s);
+	s = get_next_line(fd);
+	printf ("%s", s);
     return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 12:36:09 by woosupar          #+#    #+#             */
-/*   Updated: 2023/12/05 19:57:41 by woosupar         ###   ########.fr       */
+/*   Updated: 2023/12/06 15:25:37 by woosupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,7 @@ ssize_t	fun_read(int fd, char **buf)
 	if (val > 0)
 	{
 		(*buf)[val] = '\0';
-		while ((*buf)[i] != '\0')
-		{
-			if ((*buf)[i] == '\n')
-				return (i);
-			i++;
-		}
-		return (i);
+		return (val);
 	}
 	else if (val == 0)
 		return (-1);
@@ -40,7 +34,7 @@ ssize_t	fun_read(int fd, char **buf)
 	
 }
 
-char	*get_one_line(int fd, t_gnl *gnl)
+/*char	*get_one_line(int fd, t_gnl *gnl)
 {
 	char		*buf;
 	char		*one_line;
@@ -53,22 +47,33 @@ char	*get_one_line(int fd, t_gnl *gnl)
 		if (i != BUFFER_SIZE)
 		{
 			one_line = ft_strjoin(buf, gnl, i);
-			make_rem(buf, gnl, i);
 			free(buf);
 			return (one_line);
 		}
-		else
+		else if (i == BUFFER_SIZE)
 		{
-			one_line = gnl->temp;
 			gnl->temp = make_temp(buf, gnl);
-			free(one_line);
 			buf = 0;
 		}
+		break ;
 	}
-	one_line = ft_strjoin(buf, gnl, i);
-	free(buf);
-	return (one_line);
+	return (0);
 }
+*/
+char	*get_one_line(int fd, t_gnl *gnl)
+{
+	char	*buf;
+	char	*one_line;
+	ssize_t	temp_idx;
+
+	temp_idx = -1;
+	buf = 0;
+	fun_read(fd, &buf);
+	gnl->temp = make_temp(buf, gnl);
+	while (gnl->temp[++temp_idx] != '\0')
+		if (gnl->temp[temp_idx] == '\n')
+			break ;
+	one_line = make_one_line(gnl, temp_idx);
 
 char	*get_next_line(int fd)
 {
@@ -78,11 +83,11 @@ char	*get_next_line(int fd)
 	if (fd < 0 || fd == 1 || fd == 2)
 		return (0);
 	gnl_array[fd].temp = (char *) malloc(1);
-	gnl_array[fd].rem = (char *) malloc(1);
-	if (gnl_array[fd].temp == 0 || gnl_array[fd].rem == 0)
+	if (gnl_array[fd].temp == 0)
 		return (0);
 	(gnl_array[fd].temp)[0] = '\0';
-	(gnl_array[fd].rem)[0] = '\0';
 	ret = get_one_line(fd, &gnl_array[fd]);
+	if (ret == 0)
+		return (0);
 	return (ret);
 }

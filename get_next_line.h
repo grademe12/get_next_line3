@@ -29,4 +29,12 @@ typedef struct		s_gnl
 	ssize_t			temp_idx;
 	ssize_t			len;
 }					t_gnl;
+
+void	ft_memmove(t_gnl *gnl, ssize_t temp_idx);
+char	*make_one_line(t_gnl *gnl, ssize_t temp_idx);
+char	*make_temp(char *buf, t_gnl *gnl);
+ssize_t	fun_read(int fd, char **buf);
+char	*get_one_line(int fd, t_gnl *gnl);
+char	*get_next_line(int fd);
+
 #endif

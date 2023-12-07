@@ -9,7 +9,10 @@ int main(void)
     char    *s;
 
     fd = open("a.txt", O_RDONLY);
-	printf ("%d\n", fd);
+	s = get_next_line(fd);
+	printf ("%s", s);
+	s = get_next_line(fd);
+	printf ("%s", s);
 	s = get_next_line(fd);
 	printf ("%s", s);
 	s = get_next_line(fd);

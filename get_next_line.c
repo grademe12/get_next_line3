@@ -18,7 +18,7 @@ ssize_t	fun_read(int fd, char **buf)
 	ssize_t		i;
 	
 	i = 0;
-	*buf = (char *) malloc(BUFFER_SIZE + 1);
+	*buf = (char *) malloc(BUFFER_SIZE + 2);
 	if (*buf == 0)
 		return (0);
 	val = read(fd, *buf, BUFFER_SIZE);
@@ -34,58 +34,48 @@ ssize_t	fun_read(int fd, char **buf)
 	
 }
 
-/*char	*get_one_line(int fd, t_gnl *gnl)
+char	*end_of_file(t_gnl *gnl)
 {
-	char		*buf;
-	char		*one_line;
-	ssize_t		i;
-
-	buf = 0;
-	while (buf == 0)
-	{
-		i = fun_read(fd, &buf);
-		if (i != BUFFER_SIZE)
-		{
-			one_line = ft_strjoin(buf, gnl, i);
-			free(buf);
-			return (one_line);
-		}
-		else if (i == BUFFER_SIZE)
-		{
-			gnl->temp = make_temp(buf, gnl);
-			buf = 0;
-		}
-		break ;
-	}
-	return (0);
+	char	*one_line;
+	
+	gnl->temp_idx = -1;
+	while (gnl->temp[++gnl->temp_idx] != '\0')
+		if (gnl->temp[gnl->temp_idx] == '\n')
+			break;
+	one_line = make_one_line(gnl, gnl->temp_idx);
+	ft_memmove(gnl, gnl->temp_idx);
+	if (*(gnl->temp) == '\0')
+		return (0);
+	return (one_line);
 }
-*/
 
 char	*get_one_line(int fd, t_gnl *gnl)
 {
 	char	*buf;
 	char	*one_line;
-	ssize_t	temp_idx;
+	ssize_t check_eof;
 
-	temp_idx = -1;
+	gnl->temp_idx = -1;
 	buf = 0;
-	if (fun_read(fd, &buf) > 0)
+	check_eof = fun_read(fd, &buf);
+	if (check_eof > 0)
 	{
 		gnl->temp = make_temp(buf, gnl);
-		while (gnl->temp[++temp_idx] != '\0')
-			if (gnl->temp[temp_idx] == '\n')
+		while (gnl->temp[++gnl->temp_idx] != '\0')
+			if (gnl->temp[gnl->temp_idx] == '\n')
 				break;
-		gnl->temp_idx = temp_idx;
-		if (temp_idx == gnl->len)
+		if (gnl->temp_idx == gnl->len)
 			gnl->buffer = (gnl->buffer) * 2;
 		else
 		{
-			one_line = make_one_line(gnl, temp_idx);
-			ft_memmove(gnl, temp_idx);
+			one_line = make_one_line(gnl, gnl->temp_idx);
+			ft_memmove(gnl, gnl->temp_idx) ;
 			return (one_line);
 		}
 	}
-	return (0);
+	if (check_eof == 0)
+			return (end_of_file(gnl));
+	return ((char *)-1);
 }
 
 char	*get_next_line(int fd)
@@ -97,7 +87,9 @@ char	*get_next_line(int fd)
 		return (0);
 	if (gnl_array[fd].buffer < BUFFER_SIZE)
 		gnl_array[fd].buffer = BUFFER_SIZE;
-	while (gnl->temp_idx == gnl_len)
+	gnl_array[fd].temp_idx = 0;
+	ret = get_one_line(fd, &gnl_array[fd]);
+	while (ret == (char *)-1 && gnl_array[fd].temp_idx == gnl_array[fd].len)
 		ret = get_one_line(fd, &gnl_array[fd]);
 	if (ret == 0)
 		return (0);

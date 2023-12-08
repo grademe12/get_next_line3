@@ -35,7 +35,7 @@ char	*make_temp(char *buf, t_gnl *gnl)
 	str[i1 + i2] = '\0';
 	gnl->len = i1 + i2 ;
 	free(buf);
-	return (str);	
+	return (str);
 }
 
 char	*make_one_line(t_gnl *gnl, ssize_t temp_idx)
@@ -47,13 +47,12 @@ char	*make_one_line(t_gnl *gnl, ssize_t temp_idx)
 	str = (char *) malloc(temp_idx + 2);
 	if (str == 0)
 		return (0);
-	while (str_idx < temp_idx)
+	while (str_idx < temp_idx + 1)
 	{
 		str[str_idx] = (gnl->temp)[str_idx];
 		str_idx++;
 	}
 	str[str_idx] = '\0';
-	str[--str_idx] = '\n';
 	return (str);
 }
 

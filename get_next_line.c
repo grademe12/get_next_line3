@@ -6,7 +6,7 @@
 /*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 12:36:09 by woosupar          #+#    #+#             */
-/*   Updated: 2023/12/06 19:38:55 by woosupar         ###   ########.fr       */
+/*   Updated: 2023/12/08 14:51:01 by woosupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ ssize_t	fun_read(int fd, char **buf)
 	ssize_t		i;
 	
 	i = 0;
-	*buf = (char *) malloc(BUFFER_SIZE + 2);
+	*buf = (char *) malloc(BUFFER_SIZE + 1);
 	if (*buf == 0)
 		return (0);
 	val = read(fd, *buf, BUFFER_SIZE);
@@ -28,10 +28,15 @@ ssize_t	fun_read(int fd, char **buf)
 		return (val);
 	}
 	else if (val == 0)
+	{
+		(*buf)[val] = '\0';
 		return (-1);
+	}
 	else
+	{
+		free(*buf);
 		return (-2);
-	
+	}
 }
 
 char	*end_of_file(t_gnl *gnl)
@@ -40,12 +45,10 @@ char	*end_of_file(t_gnl *gnl)
 	
 	gnl->temp_idx = -1;
 	while (gnl->temp[++gnl->temp_idx] != '\0')
-		if (gnl->temp[gnl->temp_idx] == '\n')
+		if (gnl->temp[gnl->temp_idx] == '\n' || gnl->temp[gnl->temp_idx] == -1)
 			break;
 	one_line = make_one_line(gnl, gnl->temp_idx);
 	ft_memmove(gnl, gnl->temp_idx);
-	if (*(gnl->temp) == '\0')
-		return (0);
 	return (one_line);
 }
 
@@ -62,7 +65,7 @@ char	*get_one_line(int fd, t_gnl *gnl)
 	{
 		gnl->temp = make_temp(buf, gnl);
 		while (gnl->temp[++gnl->temp_idx] != '\0')
-			if (gnl->temp[gnl->temp_idx] == '\n')
+			if (gnl->temp[gnl->temp_idx] == '\n' || gnl->temp[gnl->temp_idx] == -1)
 				break;
 		if (gnl->temp_idx == gnl->len)
 			gnl->buffer = (gnl->buffer) * 2;
@@ -73,7 +76,7 @@ char	*get_one_line(int fd, t_gnl *gnl)
 			return (one_line);
 		}
 	}
-	if (check_eof == 0)
+	if (check_eof == -1)
 			return (end_of_file(gnl));
 	return ((char *)-1);
 }

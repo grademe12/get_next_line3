@@ -17,7 +17,7 @@
 # include <stdlib.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 7
+#  define BUFFER_SIZE 42
 # elif BUFFER_SIZE <= 0
 #  error "error"
 # endif

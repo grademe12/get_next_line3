@@ -14,9 +14,9 @@ int main(void)
 	s = get_next_line(fd);
 	// printf("%s", s);
 	// write(1, s, 10);
-	printf ("2:%s |%c\n", s, *s);
-	// s = get_next_line(fd);
-	// printf ("%s", s);
+	 printf ("2:%s\n", s);
+	//  s = get_next_line(fd);
+	//  printf ("%s", s);
 	// s = get_next_line(fd);
 	// printf ("%s", s);
 	// s = get_next_line(fd);

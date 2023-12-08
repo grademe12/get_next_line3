@@ -24,7 +24,10 @@ char	*make_temp(char *buf, t_gnl *gnl)
 		gnl->buffer = (gnl->buffer) * 2;
 	str = (char *) malloc(gnl->buffer + 1);
 	if (str == 0)
+	{
+		free(buf);
 		return (0);
+	}
 	while ((gnl->temp) != 0 && (gnl->temp)[i1] != '\0')
 	{
 		str[i1] = (gnl->temp)[i1];
@@ -35,6 +38,8 @@ char	*make_temp(char *buf, t_gnl *gnl)
 	str[i1 + i2] = '\0';
 	gnl->len = i1 + i2 ;
 	free(buf);
+	free(gnl->temp);
+	gnl->temp = 0;
 	return (str);
 }
 
@@ -55,7 +60,7 @@ char	*make_one_line(t_gnl *gnl, ssize_t temp_idx)
 	str[str_idx] = '\0';
 	return (str);
 }
-
+#include <stdio.h>
 void	ft_memmove(t_gnl *gnl, ssize_t temp_idx)
 {
 	char	*dst;
@@ -67,16 +72,18 @@ void	ft_memmove(t_gnl *gnl, ssize_t temp_idx)
 	len = 0;
 	dst = gnl->temp;
 	src = gnl->temp + temp_idx + 1;
-	if (temp_idx == gnl->len)
-		temp_idx = 0;
+	//printf("tempidx : %zd, gnl->len : %zd gnl->buffer : %zd\n", temp_idx, gnl->len, gnl->buffer);
+	// if (temp_idx == gnl->len)
+	// 	temp_idx = 0;
 	while (temp_idx + a < gnl->len)
 	{
 		dst[a] = src[a];
 		a++;
 	}
-	while (temp_idx + a < gnl->buffer + 1)
+	//printf("a : %zd, gnl->len : %zd, gnl->buffer : %zd\n", a, gnl->len, gnl->buffer);
+	while (a < gnl->buffer)
 	{
-		*(src + a) = '\0';
+		*(dst + a) = '\0';
 		a++;
 	}
 	while (gnl->temp[len] != '\0')

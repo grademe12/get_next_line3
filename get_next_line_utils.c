@@ -72,15 +72,11 @@ void	ft_memmove(t_gnl *gnl, ssize_t temp_idx)
 	len = 0;
 	dst = gnl->temp;
 	src = gnl->temp + temp_idx + 1;
-	//printf("tempidx : %zd, gnl->len : %zd gnl->buffer : %zd\n", temp_idx, gnl->len, gnl->buffer);
-	// if (temp_idx == gnl->len)
-	// 	temp_idx = 0;
 	while (temp_idx + a < gnl->len)
 	{
 		dst[a] = src[a];
 		a++;
 	}
-	//printf("a : %zd, gnl->len : %zd, gnl->buffer : %zd\n", a, gnl->len, gnl->buffer);
 	while (a < gnl->buffer)
 	{
 		*(dst + a) = '\0';

@@ -6,7 +6,7 @@
 /*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 12:36:40 by woosupar          #+#    #+#             */
-/*   Updated: 2023/12/06 19:38:57 by woosupar         ###   ########.fr       */
+/*   Updated: 2023/12/08 18:21:36 by woosupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,17 @@ void	ft_memmove(t_gnl *gnl, ssize_t temp_idx)
 	char	*dst;
 	char	*src;
 	ssize_t	a;
-	ssize_t len;
+	ssize_t	len;
 
 	a = 0;
 	len = 0;
 	dst = gnl->temp;
 	src = gnl->temp + temp_idx + 1;
+	if (temp_idx == gnl->len)
+		temp_idx = 0;
 	while (temp_idx + a < gnl->len)
 	{
-		dst[a]= src[a];
+		dst[a] = src[a];
 		a++;
 	}
 	while (temp_idx + a < gnl->buffer + 1)

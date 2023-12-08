@@ -6,7 +6,7 @@
 /*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 12:36:09 by woosupar          #+#    #+#             */
-/*   Updated: 2023/12/08 14:51:01 by woosupar         ###   ########.fr       */
+/*   Updated: 2023/12/08 18:59:58 by woosupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ ssize_t	fun_read(int fd, char **buf)
 {
 	ssize_t		val;
 	ssize_t		i;
-	
+
 	i = 0;
 	*buf = (char *) malloc(BUFFER_SIZE + 1);
 	if (*buf == 0)
@@ -28,10 +28,7 @@ ssize_t	fun_read(int fd, char **buf)
 		return (val);
 	}
 	else if (val == 0)
-	{
-		(*buf)[val] = '\0';
 		return (-1);
-	}
 	else
 	{
 		free(*buf);
@@ -42,13 +39,24 @@ ssize_t	fun_read(int fd, char **buf)
 char	*end_of_file(t_gnl *gnl)
 {
 	char	*one_line;
-	
+	ssize_t	temp_len;
+
+	if (gnl->flag == 1)
+		return (0);
+	temp_len = 0;
 	gnl->temp_idx = -1;
 	while (gnl->temp[++gnl->temp_idx] != '\0')
-		if (gnl->temp[gnl->temp_idx] == '\n' || gnl->temp[gnl->temp_idx] == -1)
-			break;
+		if (gnl->temp[gnl->temp_idx] == '\n')
+			break ;
 	one_line = make_one_line(gnl, gnl->temp_idx);
 	ft_memmove(gnl, gnl->temp_idx);
+	while (gnl->temp[temp_len])
+		temp_len++;
+	if (temp_len == 0)
+	{
+		free(gnl->temp);
+		gnl->flag = 1;
+	}
 	return (one_line);
 }
 
@@ -56,7 +64,7 @@ char	*get_one_line(int fd, t_gnl *gnl)
 {
 	char	*buf;
 	char	*one_line;
-	ssize_t check_eof;
+	ssize_t	check_eof;
 
 	gnl->temp_idx = -1;
 	buf = 0;
@@ -65,32 +73,31 @@ char	*get_one_line(int fd, t_gnl *gnl)
 	{
 		gnl->temp = make_temp(buf, gnl);
 		while (gnl->temp[++gnl->temp_idx] != '\0')
-			if (gnl->temp[gnl->temp_idx] == '\n' || gnl->temp[gnl->temp_idx] == -1)
-				break;
+			if (gnl->temp[gnl->temp_idx] == '\n')
+				break ;
 		if (gnl->temp_idx == gnl->len)
 			gnl->buffer = (gnl->buffer) * 2;
 		else
 		{
 			one_line = make_one_line(gnl, gnl->temp_idx);
-			ft_memmove(gnl, gnl->temp_idx) ;
+			ft_memmove(gnl, gnl->temp_idx);
 			return (one_line);
 		}
 	}
 	if (check_eof == -1)
-			return (end_of_file(gnl));
+		return (end_of_file(gnl));
 	return ((char *)-1);
 }
 
 char	*get_next_line(int fd)
 {
 	char				*ret;
-	static	t_gnl		gnl_array[4092];
+	static t_gnl		gnl_array[4092];
 
 	if (fd < 0 || fd == 1 || fd == 2)
 		return (0);
 	if (gnl_array[fd].buffer < BUFFER_SIZE)
 		gnl_array[fd].buffer = BUFFER_SIZE;
-	gnl_array[fd].temp_idx = 0;
 	ret = get_one_line(fd, &gnl_array[fd]);
 	while (ret == (char *)-1 && gnl_array[fd].temp_idx == gnl_array[fd].len)
 		ret = get_one_line(fd, &gnl_array[fd]);

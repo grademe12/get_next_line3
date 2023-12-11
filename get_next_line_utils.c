@@ -1,16 +1,18 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/02 12:36:40 by woosupar          #+#    #+#             */
-/*   Updated: 2023/12/08 18:21:36 by woosupar         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "get_next_line.h"
+
+ssize_t check_nl_temp(char *str)
+{
+    ssize_t i;
+
+    i = 0;
+    while (str[i] != '\0')
+    { 
+        if (str[i] == '\n')
+            return (i);
+        i++;
+    }
+    return (-1);
+}
 
 char	*make_temp(char *buf, t_gnl *gnl)
 {
@@ -20,8 +22,6 @@ char	*make_temp(char *buf, t_gnl *gnl)
 
 	i1 = 0;
 	i2 = -1;
-	if (gnl->len + BUFFER_SIZE > gnl->buffer)
-		gnl->buffer = (gnl->buffer) * 2;
 	str = (char *) malloc(gnl->buffer + 1);
 	if (str == 0)
 	{
@@ -30,9 +30,9 @@ char	*make_temp(char *buf, t_gnl *gnl)
 	}
 	while ((gnl->temp) != 0 && (gnl->temp)[i1] != '\0')
 	{
-		str[i1] = (gnl->temp)[i1];
-		i1++;
-	}
+        str[i1] = (gnl->temp)[i1];
+        i1++;
+    }
 	while (buf[++i2] != '\0')
 		str[i1 + i2] = buf[i2];
 	str[i1 + i2] = '\0';
@@ -43,24 +43,26 @@ char	*make_temp(char *buf, t_gnl *gnl)
 	return (str);
 }
 
-char	*make_one_line(t_gnl *gnl, ssize_t temp_idx)
+char	*make_one_line(t_gnl *gnl, ssize_t nl_index, ssize_t flag)
 {
 	char	*str;
 	ssize_t	str_idx;
 
 	str_idx = 0;
-	str = (char *) malloc(temp_idx + 2);
+	if (flag == -2)
+        nl_index--;
+    str = (char *) malloc(nl_index + 2);
 	if (str == 0)
 		return (0);
-	while (str_idx < temp_idx + 1)
+	while (str_idx < nl_index + 1)
 	{
 		str[str_idx] = (gnl->temp)[str_idx];
 		str_idx++;
 	}
 	str[str_idx] = '\0';
+    ft_memmove(gnl, nl_index);
 	return (str);
 }
-#include <stdio.h>
 void	ft_memmove(t_gnl *gnl, ssize_t temp_idx)
 {
 	char	*dst;
@@ -68,19 +70,17 @@ void	ft_memmove(t_gnl *gnl, ssize_t temp_idx)
 	ssize_t	a;
 	ssize_t	len;
 
-	a = 0;
+	if (gnl->flag == 1)
+        return ;
+    a = 0;
 	len = 0;
 	dst = gnl->temp;
 	src = gnl->temp + temp_idx + 1;
-	//printf("tempidx : %zd, gnl->len : %zd gnl->buffer : %zd\n", temp_idx, gnl->len, gnl->buffer);
-	// if (temp_idx == gnl->len)
-	// 	temp_idx = 0;
 	while (temp_idx + a < gnl->len)
 	{
 		dst[a] = src[a];
 		a++;
 	}
-	//printf("a : %zd, gnl->len : %zd, gnl->buffer : %zd\n", a, gnl->len, gnl->buffer);
 	while (a < gnl->buffer)
 	{
 		*(dst + a) = '\0';

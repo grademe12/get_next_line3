@@ -29,7 +29,6 @@ ssize_t ft_read(int fd, char **buf, t_gnl *gnl)
 char    *get_one_line(int fd, t_gnl *gnl)
 {
     char    *buf;
-    char    *one_line;
     ssize_t val;
 
     gnl->nl_index = -1;
@@ -39,16 +38,13 @@ char    *get_one_line(int fd, t_gnl *gnl)
         if (val == -3)
            return (0);
         if (val == -2)
-            return (make_one_line(gnl, gnl->len, -2));
+            return (make_one_line(gnl, gnl->len - 1, -2));
         if (gnl->len + BUFFER_SIZE > gnl->buffer)
             gnl->buffer = (gnl->buffer) * 2;
         gnl->temp = make_temp(buf, gnl);
         gnl->nl_index = check_nl_temp(gnl->temp);
         if (gnl->nl_index >= 0)
-        {
-            one_line = make_one_line(gnl, gnl->nl_index, 0);
-            return (one_line);
-        }
+            return(make_one_line(gnl, gnl->nl_index, 0));
     }
     return (0);
 }
@@ -56,15 +52,14 @@ char    *get_one_line(int fd, t_gnl *gnl)
 char    *get_next_line(int fd)
 {
     static  t_gnl  gnl_array[4092];
-    char           *ret;
     ssize_t        idx; 
 
     if (fd < 0 || fd == 1 || fd == 2)
         return (0);
-    if (gnl_array[fd].buffer < BUFFER_SIZE)
-        gnl_array[fd].buffer = BUFFER_SIZE;
     if (gnl_array[fd].flag == 1)
         return (0);
+    if (gnl_array[fd].buffer < BUFFER_SIZE)
+        gnl_array[fd].buffer = BUFFER_SIZE;
     idx = 0;
     while (gnl_array[fd].temp != 0 && gnl_array[fd].temp[idx] != '\0')
     {
@@ -74,8 +69,5 @@ char    *get_next_line(int fd)
     }
     if (idx != gnl_array[fd].len)
         return (make_one_line(&gnl_array[fd], idx, 0));
-    ret = get_one_line(fd, &gnl_array[fd]);
-    if (ret != 0)
-        return (ret);
-    return (0);
+    return (get_one_line(fd, &gnl_array[fd]));
 }

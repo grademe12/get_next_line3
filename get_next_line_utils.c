@@ -49,8 +49,11 @@ char	*make_one_line(t_gnl *gnl, ssize_t nl_index, ssize_t flag)
 	ssize_t	str_idx;
 
 	str_idx = 0;
-	if (flag == -2)
-        nl_index--;
+	if (gnl->temp == 0 || gnl->temp[0] == '\0')
+	{
+		free(gnl->temp);
+		return (0);
+	}
     str = (char *) malloc(nl_index + 2);
 	if (str == 0)
 		return (0);
@@ -60,7 +63,12 @@ char	*make_one_line(t_gnl *gnl, ssize_t nl_index, ssize_t flag)
 		str_idx++;
 	}
 	str[str_idx] = '\0';
-    ft_memmove(gnl, nl_index);
+	if (flag == -2)
+	{
+		free(gnl->temp);
+		gnl->temp = 0;
+	}
+	ft_memmove(gnl, nl_index);
 	return (str);
 }
 void	ft_memmove(t_gnl *gnl, ssize_t temp_idx)

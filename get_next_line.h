@@ -1,17 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/16 13:19:52 by woosupar          #+#    #+#             */
+/*   Updated: 2023/12/16 13:24:04 by woosupar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdio.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 50
+#  define BUFFER_SIZE 1000000
 # elif BUFFER_SIZE <= 0
 #  error "error"
 # endif
 
-typedef struct	s_gnl
+typedef struct s_gnl
 {
 	char	*temp;
 	ssize_t	nl_index;
@@ -26,6 +37,7 @@ void	ft_memmove(t_gnl *gnl, ssize_t temp_idx);
 char	*get_next_line(int fd);
 char	*get_one_line(int fd, t_gnl *gnl);
 ssize_t	ft_read(int fd, char **buf, t_gnl *gnl);
-ssize_t check_nl_temp(char *str);
+ssize_t	check_nl_temp(char *str);
+void	clear_gnl(t_gnl *gnl);
 
 #endif

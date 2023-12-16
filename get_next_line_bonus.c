@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/16 20:47:18 by woosupar          #+#    #+#             */
-/*   Updated: 2023/12/16 21:13:22 by woosupar         ###   ########.fr       */
+/*   Created: 2023/12/17 00:19:38 by woosupar          #+#    #+#             */
+/*   Updated: 2023/12/17 00:21:55 by woosupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*get_one_line(int fd, t_gnl *gnl, ssize_t idx)
 
 char	*get_next_line(int fd)
 {
-	static t_gnl	gnl_array[30];
+	static t_gnl	gnl_array[10003];
 	ssize_t			idx;
 
 	if (fd < 0 || fd == 1 || fd == 2)

@@ -17,7 +17,7 @@
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+#  define BUFFER_SIZE 10
 # elif BUFFER_SIZE <= 0
 #  error "error"
 # endif
@@ -38,5 +38,6 @@ char	*get_one_line(int fd, t_gnl *gnl, ssize_t idx);
 ssize_t	ft_read(int fd, char **buf, t_gnl *gnl);
 ssize_t	check_nl_temp(t_gnl *gnl);
 void	clear_gnl(t_gnl *gnl, ssize_t flag);
+void	make_temp_no_malloc(char *buf, t_gnl *gnl);
 
 #endif

@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/17 00:19:10 by woosupar          #+#    #+#             */
-/*   Updated: 2023/12/17 00:19:17 by woosupar         ###   ########.fr       */
+/*   Created: 2023/12/16 21:00:34 by woosupar          #+#    #+#             */
+/*   Updated: 2023/12/16 21:03:22 by woosupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
 
 # include <stdlib.h>
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+#  define BUFFER_SIZE 10
 # elif BUFFER_SIZE <= 0
 #  error "error"
 # endif
@@ -38,5 +38,6 @@ char	*get_one_line(int fd, t_gnl *gnl, ssize_t idx);
 ssize_t	ft_read(int fd, char **buf, t_gnl *gnl);
 ssize_t	check_nl_temp(t_gnl *gnl);
 void	clear_gnl(t_gnl *gnl, ssize_t flag);
+void	make_temp_no_malloc(char *buf, t_gnl *gnl);
 
 #endif

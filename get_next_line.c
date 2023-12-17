@@ -41,6 +41,26 @@ ssize_t	ft_read(int fd, char **buf, t_gnl *gnl)
 	}
 }
 
+void	make_temp_no_malloc(char *buf, t_gnl *gnl)
+{
+	ssize_t	i1;
+	ssize_t	i2;
+
+	if (gnl->len + BUFFER_SIZE > gnl->buffer)
+	{
+		gnl->buffer = (gnl->len + BUFFER_SIZE) * 5;
+		gnl->temp = make_temp(buf, gnl);
+		return ;
+	}
+	i1 = gnl->len;
+	i2 = -1;
+	while (gnl->temp != 0 && buf[++i2] != '\0')
+		gnl->temp[i1 + i2] = buf[i2];
+	gnl->temp[i1 + i2] = '\0';
+	gnl->len = i1 + i2;
+	free(buf);
+}
+
 char	*get_one_line(int fd, t_gnl *gnl, ssize_t idx)
 {
 	char	*buf;
@@ -59,9 +79,7 @@ char	*get_one_line(int fd, t_gnl *gnl, ssize_t idx)
 			clear_gnl(gnl, 0);
 			return (one_line);
 		}
-		if (gnl->len + BUFFER_SIZE > gnl->buffer)
-			gnl->buffer = (gnl->len + BUFFER_SIZE) * 2;
-		gnl->temp = make_temp(buf, gnl);
+		make_temp_no_malloc(buf, gnl);
 		idx = check_nl_temp(gnl);
 		if (idx >= 0)
 			return (make_one_line(gnl, idx, 0));
@@ -71,13 +89,11 @@ char	*get_one_line(int fd, t_gnl *gnl, ssize_t idx)
 
 char	*get_next_line(int fd)
 {
-	static t_gnl	gnl_array[30];
+	static t_gnl	gnl_array[1000];
 	ssize_t			idx;
 
 	if (fd < 0 || fd == 1 || fd == 2)
 		return (0);
-	if (gnl_array[fd].buffer < BUFFER_SIZE)
-		gnl_array[fd].buffer = BUFFER_SIZE;
 	idx = 0;
 	while (gnl_array[fd].temp != 0 && gnl_array[fd].temp[idx] != '\0')
 	{

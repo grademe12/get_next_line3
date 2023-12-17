@@ -25,19 +25,20 @@
 typedef struct s_gnl
 {
 	char	*temp;
+	char	*buf;
 	ssize_t	nl_index;
 	ssize_t	len;
 	ssize_t	buffer;
 }				t_gnl;
 
-char	*make_temp(char *buf, t_gnl *gnl);
+char	*make_temp(t_gnl *gnl);
 char	*make_one_line(t_gnl *gnl, ssize_t nl_index, ssize_t flag);
 void	ft_memmove(t_gnl *gnl, ssize_t temp_idx);
 char	*get_next_line(int fd);
 char	*get_one_line(int fd, t_gnl *gnl, ssize_t idx);
-ssize_t	ft_read(int fd, char **buf, t_gnl *gnl);
+ssize_t	ft_read(int fd, t_gnl *gnl);
 ssize_t	check_nl_temp(t_gnl *gnl);
 void	clear_gnl(t_gnl *gnl, ssize_t flag);
-void	make_temp_no_malloc(char *buf, t_gnl *gnl);
+void	make_temp_no_malloc(t_gnl *gnl);
 
 #endif

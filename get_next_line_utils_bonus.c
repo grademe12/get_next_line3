@@ -18,6 +18,8 @@ void	clear_gnl(t_gnl *gnl, ssize_t flag)
 	gnl->temp = 0;
 	if (flag != 1)
 	{
+		free(gnl->buf);
+		gnl->buf = 0;
 		gnl->buffer = 0;
 		gnl->len = 0;
 		gnl->nl_index = 0;
@@ -35,7 +37,7 @@ ssize_t	check_nl_temp(t_gnl *gnl)
 	return (-1);
 }
 
-char	*make_temp(char *buf, t_gnl *gnl)
+char	*make_temp(t_gnl *gnl)
 {
 	ssize_t	i1;
 	ssize_t	i2;
@@ -46,7 +48,6 @@ char	*make_temp(char *buf, t_gnl *gnl)
 	str = (char *) malloc(gnl->buffer + 1);
 	if (str == 0)
 	{
-		free(buf);
 		clear_gnl(gnl, 0);
 		return (0);
 	}
@@ -55,11 +56,10 @@ char	*make_temp(char *buf, t_gnl *gnl)
 		str[i1] = (gnl->temp)[i1];
 		i1++;
 	}
-	while (buf[++i2] != '\0')
-		str[i1 + i2] = buf[i2];
+	while ((gnl->buf)[++i2] != '\0')
+		str[i1 + i2] = (gnl->buf)[i2];
 	str[i1 + i2] = '\0';
 	gnl->len = i1 + i2;
-	free(buf);
 	clear_gnl(gnl, 1);
 	return (str);
 }

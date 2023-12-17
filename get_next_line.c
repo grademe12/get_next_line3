@@ -81,7 +81,7 @@ char	*get_one_line(int fd, t_gnl *gnl, ssize_t idx)
 
 char	*get_next_line(int fd)
 {
-	static t_gnl	gnl_array[1000];
+	static t_gnl	gnl_array[OPEN_MAX];
 	ssize_t			idx;
 
 	if (fd < 0 || fd == 1 || fd == 2)

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: woosupar <woosupar@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -20,6 +20,12 @@
 #  define BUFFER_SIZE 10
 # elif BUFFER_SIZE <= 0
 #  error "error"
+# endif
+
+# ifndef OPEN_MAX
+#  define OPEN_MAX 40920
+# elif OPEN_MAX <= 2
+#  error "FD error"
 # endif
 
 typedef struct s_gnl
